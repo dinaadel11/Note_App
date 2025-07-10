@@ -21,15 +21,14 @@ import 'package:newsapp/views/notes_view.dart';
 //   runApp(NoteApp());
 // }
 void main() async {
-  Bloc.observer = SimpleBlocObserver();
-  WidgetsFlutterBinding.ensureInitialized();
-
   // Initialize Hive
   await Hive.initFlutter();
+  Bloc.observer =
+      SimpleBlocObserver(); //دي بتوفر عليا عمليه ال debuge  ودي كمان اللي بتظهر العمليات في ال debug console
 
+  Hive.registerAdapter(NoteModelAdapter());
   // ممكن تفتحي Box هنا لو حابة
   await Hive.openBox(kNotesBox);
-  Hive.registerAdapter(NoteModelAdapter());
 
   runApp(
     DevicePreview(
@@ -46,7 +45,9 @@ class NoteApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => AddNoteCubit()),
+          BlocProvider(
+              create: (context) =>
+                  AddNoteCubit()), //ده علشان استخدمه في كل الشاشات حاطه علي الماتريال بستخدم الكيزبت
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
