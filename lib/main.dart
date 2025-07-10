@@ -6,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:newsapp/addnotecuibit/add_note_cubit.dart';
 import 'package:newsapp/constrain.dart';
 import 'package:newsapp/models/note_model.dart';
+import 'package:newsapp/simple_bloc_observer.dart';
 import 'package:newsapp/views/notes_view.dart';
 
 // void main() async => runApp(
@@ -20,6 +21,7 @@ import 'package:newsapp/views/notes_view.dart';
 //   runApp(NoteApp());
 // }
 void main() async {
+  Bloc.observer = SimpleBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Hive
