@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:newsapp/addnotecuibit/add_note_cubit.dart';
 import 'package:newsapp/constrain.dart';
 import 'package:newsapp/models/note_model.dart';
 import 'package:newsapp/notes_cubit/notes_cubit.dart';

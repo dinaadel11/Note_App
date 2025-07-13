@@ -3,13 +3,19 @@ import 'package:newsapp/constrain.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField(
-      {super.key, required this.hint, this.maxlines = 1, this.onsaved});
+      {super.key,
+      required this.hint,
+      this.maxlines = 1,
+      this.onsaved,
+      this.onChange});
   final String hint;
   final int maxlines;
   final void Function(String?)? onsaved;
+  final void Function(String)? onChange;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onChanged: onChange,
       onSaved: onsaved,
       validator: (value) {
         if (value?.isEmpty ?? true) {
