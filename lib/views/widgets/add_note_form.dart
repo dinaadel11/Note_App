@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsapp/addnotecuibit/add_note_cubit.dart';
 import 'package:newsapp/models/note_model.dart';
+import 'package:newsapp/notes_cubit/notes_cubit.dart';
 import 'package:newsapp/views/widgets/custom_button.dart';
 import 'package:newsapp/views/widgets/custom_text_field.dart';
 
@@ -51,22 +52,27 @@ class _AddNoteFormState extends State<AddNoteForm> {
           BlocBuilder<AddNoteCubit, AddNoteState>(
             builder: (context, state) {
               return CustomButton(
-                isloading: state is AddNoteLoading ? true : false,
-                ontap: () {
-                  if (formkey.currentState!.validate()) {
-                    formkey.currentState!.save();
-                    var notemodel = NoteModel(
-                        titel: titel!,
-                        subtitel: subtitel!,
-                        date: DateTime.now().toString(),
-                        color: Colors.red.value);
-                    BlocProvider.of<AddNoteCubit>(context).addNote(notemodel);
-                  } else {
-                    autovalidateMode = AutovalidateMode.always;
-                    setState(() {});
-                  }
-                },
-              );
+                  isloading: state is AddNoteLoading ? true : false,
+                  ontap: () {
+                    if (formkey.currentState!.validate()) {
+                      formkey.currentState!.save();
+                      var notemodel = NoteModel(
+                          titel: titel!,
+                          subtitel: subtitel!,
+                          date: DateTime.now().toString(),
+                          color: Colors.red.value);
+                      BlocProvider.of<AddNoteCubit>(context)
+                          .addNote(notemodel)
+                          .then((_) {
+                        BlocProvider.of<NotesCubit>(context)
+                            .fetchAllNotes(); // ⬅️ دي مهمة
+                        Navigator.pop(context);
+                      });
+                    } else {
+                      autovalidateMode = AutovalidateMode.always;
+                      setState(() {});
+                    }
+                  });
             },
           ),
           const SizedBox(

@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:newsapp/addnotecuibit/add_note_cubit.dart';
 import 'package:newsapp/constrain.dart';
 import 'package:newsapp/models/note_model.dart';
+import 'package:newsapp/notes_cubit/notes_cubit.dart';
 import 'package:newsapp/simple_bloc_observer.dart';
 import 'package:newsapp/views/notes_view.dart';
 
@@ -16,7 +17,7 @@ void main() async {
 
   Hive.registerAdapter(NoteModelAdapter());
   // ممكن تفتحي Box هنا لو حابة
-  await Hive.openBox(kNotesBox);
+  await Hive.openBox<NoteModel>(kNotesBox);
 
   runApp(
     DevicePreview(
@@ -32,15 +33,15 @@ class NoteApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: [
-          BlocProvider(
-              create: (context) =>
-                  AddNoteCubit()), //ده علشان استخدمه في كل الشاشات حاطه علي الماتريال بستخدم الكيزبت
-        ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData.dark(),
-          home: const NotesView(),
-        ));
+      providers: [
+        BlocProvider(create: (_) => AddNoteCubit()),
+        BlocProvider(create: (_) => NotesCubit()..fetchAllNotes()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData.dark(),
+        home: const NotesView(),
+      ),
+    );
   }
 }
